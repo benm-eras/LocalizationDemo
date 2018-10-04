@@ -1,7 +1,21 @@
-﻿
+﻿@using LocalizationDemo.Data
+@model List<Foo>
 @{
     ViewData["Title"] = "Index";
 }
 
 <h2>Index</h2>
+
+@foreach (Foo foo in Model)
+{
+    <div>
+        <h2>Foo @foo.Id</h2>
+        <ul>
+            @foreach (Bar bar in foo.Bars)
+            {
+                <li>@bar.Value</li>
+            }
+        </ul>
+    </div>
+}
 
