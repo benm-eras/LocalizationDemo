@@ -25,7 +25,7 @@ namespace LocalizationDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(o => o.UseInMemoryDatabase());
-
+            //services.AddSingleton<DataContextAccessor>();
             services.AddSingleton<IResourceSource, ResourceSource>();
             services.AddSingleton<IStringLocalizerFactory, StringResourceLocalizerFactory>();
             services.AddSingleton<IStringLocalizer, StringResourceLocalizer>();
