@@ -9,9 +9,4 @@ namespace LocalizationDemo.Services
     {
         string Get(string key);
     }
-
-    public class ResourceSource : IResourceSource
-    {
-        public string Get(string key) => $"[{key}]";
-    }
 }
