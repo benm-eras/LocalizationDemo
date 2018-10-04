@@ -3,12 +3,18 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using LocalizationDemo.Data;
+using LocalizationDemo.Localization;
+using LocalizationDemo.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Localization;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.Mvc.Localization;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Localization;
+using System.Globalization;
 
 namespace LocalizationDemo
 {
@@ -19,7 +25,23 @@ namespace LocalizationDemo
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddDbContext<DataContext>(o => o.UseInMemoryDatabase());
-            
+
+            services.AddSingleton<IResourceSource, ResourceSource>();
+            services.AddSingleton<IStringLocalizerFactory, StringResourceLocalizerFactory>();
+            services.AddSingleton<IStringLocalizer, StringResourceLocalizer>();
+            services.AddSingleton<IHtmlLocalizer, HtmlResourceLocalizer>();
+
+            CultureInfo en = new CultureInfo("en-GB");
+
+            services.Configure<RequestLocalizationOptions>(o =>
+            {
+                o.DefaultRequestCulture = new RequestCulture(en, en);
+                o.SupportedCultures = new List<CultureInfo>() { en };
+                o.SupportedUICultures = new List<CultureInfo>() { en };
+            });
+
+            services.AddLocalization();
+
             services.AddMvc()
                 .SetCompatibilityVersion(CompatibilityVersion.Version_2_1);
                 //.AddDataAnnotationsLocalization(o =>
